@@ -1,0 +1,4 @@
+Study,Median_OS_Treatment,n_treatment,Median_OS_Treatment_CI_lower,Median_OS_Treatment_CI_upper,Median_OS_Control,n_control,Median_OS_Control_CI_lower,Median_OS_Control_CI_upper,HR,HR_CI_lower,HR_CI_upper
+Craddock 2017,11,130,8.5,12,9.6,129,7.9,12.7,1.15,0.87,1.51
+Fenaux 2010,24.5,,,,16,,,,0.47,0.79,0.28
+Lubbert 2020,8.2,,,,5.1,,,,0.65,0.48,0.89
