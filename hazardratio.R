@@ -10,32 +10,43 @@
 # Note that this method is based on an assumption that 
 # survival times follow an exponential distribution within each group
 
-# Sample data here are from
+# Sample data in example are from
 # http://dx.doi.org/10.1016/S2352-3026(16)30147-8
 
-# Median survival times and confidence intervals for each group
-median_group1 <- 40.3  # Replace with actual median survival time for group 1
-ci_group1 <- c(35, 44.8)  # Replace with actual CI for median survival time for group 1
 
-median_group2 <- 35.8  # Replace with actual median survival time for group 2
-ci_group2 <- c(29, 40.6)  # Replace with actual CI for median survival time for group 2
-
-# Number of patients in each group
-n_group1 <- 387  # Replace with actual number of patients in group 1
-n_group2 <- 381  # Replace with actual number of patients in group 2
-
-# Calculating hazard ratio using exponential distribution approximation
-# Assuming exponential distribution: median = log(2) / lambda
-lambda_group1 <- log(2) / median_group1
-lambda_group2 <- log(2) / median_group2
-
-# Estimating hazard ratio using the ratio of hazard rates (lambda)
-hazard_ratio <- lambda_group1 / lambda_group2
-
-# Calculating confidence interval for the hazard ratio
-lower_CI <- exp(log(hazard_ratio) - 1.96 * sqrt((1 / n_group1) + (1 / n_group2)))
-upper_CI <- exp(log(hazard_ratio) + 1.96 * sqrt((1 / n_group1) + (1 / n_group2)))
-
-# Displaying results
-cat("Estimated Hazard Ratio:", round(hazard_ratio, 2), "\n")
-cat("95% Confidence Interval for Hazard Ratio:", round(lower_CI, 2), "-", round(upper_CI, 2), "\n")
+#' Estimate hazard ratio from median overall survival, confidence intervals, and group sizes
+#'
+#' @param median_os_group1 
+#' @param median_os_group2 
+#' @param ci_group1 
+#' @param ci_group2 
+#' @param n_group1 
+#' @param n_group2 
+#'
+#' @returns A list containing HR estimate with 95% confidence interval 
+#'
+#' @examples
+#' estimate_hr(median_os_group1 = 40.3, median_os_group2 = 35.8,
+#'             ci_group1 = c(35, 44.8), ci_group2 = c(29, 40.6),
+#'             n_group1 = 387, n_group2 = 381)
+estimate_hr <- function(median_os_group1, median_os_group2,
+                        ci_group1, ci_group2,
+                        n_group1, n_group2) {
+  # Calculating hazard ratio using exponential distribution approximation
+  # Assuming exponential distribution: median = log(2) / lambda
+  lambda_group1 <- log(2) / median_os_group1
+  lambda_group2 <- log(2) / median_os_group2
+  
+  # Estimating hazard ratio using the ratio of hazard rates (lambda)
+  hazard_ratio <- lambda_group1 / lambda_group2
+  
+  # Calculating confidence interval for the hazard ratio
+  lower_CI <- exp(log(hazard_ratio) - 1.96 * sqrt((1 / n_group1) + (1 / n_group2)))
+  upper_CI <- exp(log(hazard_ratio) + 1.96 * sqrt((1 / n_group1) + (1 / n_group2)))  
+  
+  result <- list()
+  result$hr <- hazard_ratio
+  result$ci <- c(lower_CI, upper_CI)
+  
+  return(result)
+}
