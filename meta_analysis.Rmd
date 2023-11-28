@@ -1,0 +1,52 @@
+---
+title: "Untitled"
+author: "Dan Kerchner, Xinyang Zhang, Erika Hubbard, Xun Liu, Yijie He"
+date: "`r Sys.Date()`"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Load libraries and read study data:
+
+```{r}
+library(dplyr)
+library(meta)
+
+df <- read.csv('data/study_data.csv')
+```
+
+log-transform hazard ratios and compute standard error based on the confidence interval bounds 
+
+```{r}
+df <- df %>%
+  mutate(logHR = log(HR),
+         se_logHR = abs((log(HR_CI_upper) - log(HR_CI_lower))/(2*1.96)),
+         trial = row_number(),
+         study_year = paste(Study, Year))
+```
+
+# Perform meta-analysis using `metagen`
+
+Based on https://link.springer.com/chapter/10.1007/978-3-319-21416-0_2
+
+```{r}
+mg1 <- metagen(logHR, se_logHR,
+               studlab=study_year, data = df,
+               sm="HR")
+print(mg1)
+pdf(file='forestplot.pdf', height = 6, width = 10)
+forest(mg1, sortvar = Year)
+dev.off()
+forest(mg1, sortvar = Year)
+```
+
+Funnel plot:
+```{r}
+pdf(file='funnelplot.pdf', height = 6, width = 8)
+funnel(mg1, studlab = df$study, xlim = c(0.35, 1.6))
+dev.off()
+```
+

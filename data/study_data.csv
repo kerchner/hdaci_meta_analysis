@@ -1,4 +1,9 @@
-Study,Median_OS_Treatment,n_treatment,Median_OS_Treatment_CI_lower,Median_OS_Treatment_CI_upper,Median_OS_Control,n_control,Median_OS_Control_CI_lower,Median_OS_Control_CI_upper,HR,HR_CI_lower,HR_CI_upper
-Craddock 2017,11,130,8.5,12,9.6,129,7.9,12.7,1.15,0.87,1.51
-Fenaux 2010,24.5,,,,16,,,,0.47,0.79,0.28
-Lubbert 2020,8.2,,,,5.1,,,,0.65,0.48,0.89
+Study,Year,Median_OS_Treatment,n_treatment,Median_OS_Treatment_CI_lower,Median_OS_Treatment_CI_upper,Median_OS_Control,n_control,Median_OS_Control_CI_lower,Median_OS_Control_CI_upper,HR,HR_CI_lower,HR_CI_upper
+Craddock,2017,11,130,8.5,12,9.6,129,7.9,12.7,1.15,0.87,1.51
+Fenaux,2010,24.5,,,,16,,,,0.47,0.79,0.28
+Lübbert,2020,8.2,,,,5.1,,,,0.65,0.48,0.89
+San-Miguel,2016,33.64,387,31.34,NA,30.39,381,26.87,NA,0.87,0.69,1.10
+Prebet,2015,,,,,,,,,0.72,0.44,1.17
+Jenner,2023,,,,,,,,,0.99,0.76,1.29
+Moreau,2015,33.64,,31.34,NE,30.39,26.87,NE,,0.87,0.69,1.10
+Bachy,2022,51.8,,35.7,72.6,42.9,29.9,NR,,0.9,0.68,1.20
