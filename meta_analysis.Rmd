@@ -38,15 +38,26 @@ mg1 <- metagen(logHR, se_logHR,
                sm="HR")
 print(mg1)
 pdf(file='forestplot.pdf', height = 6, width = 10)
-forest(mg1, sortvar = Year)
+forest(mg1, sortvar = Year, layout="RevMan5")
 dev.off()
-forest(mg1, sortvar = Year)
+forest(mg1, sortvar = Year, layout="RevMan5")
 ```
 
 Funnel plot:
 ```{r}
-pdf(file='funnelplot.pdf', height = 6, width = 8)
-funnel(mg1, studlab = df$study, xlim = c(0.35, 1.6))
+pdf(file='funnelplot.pdf', height = 6.5, width = 8.5)
+funnel(mg1, studlab = df$study, cex.studlab = 0.6)#, xlim = c(0.55, 1.50))
 dev.off()
+```
+
+## Begg's test
+```{r}
+metabias(mg1, k.min=9, method.bias = "Begg")
+```
+
+## Egger's test
+
+```{r}
+metabias(mg1, k.min=9, plotit = TRUE, method.bias = "Egger")
 ```
 
