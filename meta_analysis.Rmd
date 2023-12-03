@@ -11,7 +11,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 Load libraries and read study data:
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 library(dplyr)
 library(meta)
 
@@ -25,29 +25,56 @@ df <- df %>%
   mutate(logHR = log(HR),
          se_logHR = abs((log(HR_CI_upper) - log(HR_CI_lower))/(2*1.96)),
          trial = row_number(),
-         study_year = paste(Study, Year))
+         study_year = paste(Study, Year)) %>%
+  rename(`Hazard Ratio type` = HR_Estimated)
 ```
 
 # Perform meta-analysis using `metagen`
 
 Based on https://link.springer.com/chapter/10.1007/978-3-319-21416-0_2
 
-```{r}
+```{r fig.height=6, fig.width=10}
 mg1 <- metagen(logHR, se_logHR,
                studlab=study_year, data = df,
                sm="HR")
 print(mg1)
 pdf(file='forestplot.pdf', height = 6, width = 10)
-forest(mg1, sortvar = Year, layout="RevMan5")
+forest(mg1, sortvar = Year, layout="RevMan5",
+       text.common = 'Total (fixed effect, 95% CI)', text.w.common = 'fixed',
+       label.left = "favors treatment", label.right = "favors control",
+       print.tau2 = FALSE)
+# didn't work:
+#       leftcols = c("study_year", "TE", "seTE"),
+#       leftlabs = c("Study (Year)", "log(HR)", "SE"))
 dev.off()
-forest(mg1, sortvar = Year, layout="RevMan5")
+forest(mg1, sortvar = Year, layout="RevMan5",
+       text.common = 'Total (fixed effect, 95% CI)', text.w.common = 'fixed',
+       label.left = "favors treatment", label.right = "favors control",
+       print.tau2 = FALSE)
 ```
+```{r fig.height=6, fig.width=10}
+mg2 <- update.meta(mg1, subgroup = `Hazard Ratio type`)
+pdf(file='forestplot2.pdf', height = 6, width = 10)
+forest(mg2, sortvar = Year, layout="RevMan5",
+       text.common = 'Total (fixed effect, 95% CI)', text.w.common = 'fixed',
+       label.left = "favors treatment", label.right = "favors control",
+       label.test.subgroup.common = 'Test for subgroup differences (fixed effects):',
+       print.tau2 = FALSE)
+dev.off()
+forest(mg2, sortvar = Year, layout="RevMan5",
+       text.common = 'Total (fixed effect, 95% CI)', text.w.common = 'fixed',
+       label.left = "favors treatment", label.right = "favors control",
+       label.test.subgroup.common = 'Test for subgroup differences (fixed effects):',
+       print.tau2 = FALSE)
+```
+
 
 Funnel plot:
 ```{r}
 pdf(file='funnelplot.pdf', height = 6.5, width = 8.5)
 funnel(mg1, studlab = df$study, cex.studlab = 0.6)#, xlim = c(0.55, 1.50))
 dev.off()
+funnel(mg1, studlab = df$study, cex.studlab = 0.6)#, xlim = c(0.55, 1.50))
 ```
 
 ## Begg's test
