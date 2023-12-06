@@ -18,8 +18,6 @@
 #'
 #' @param median_os_group1 
 #' @param median_os_group2 
-#' @param ci_group1 
-#' @param ci_group2 
 #' @param n_group1 
 #' @param n_group2 
 #'
@@ -27,10 +25,8 @@
 #'
 #' @examples
 #' estimate_hr(median_os_group1 = 40.3, median_os_group2 = 35.8,
-#'             ci_group1 = c(35, 44.8), ci_group2 = c(29, 40.6),
 #'             n_group1 = 387, n_group2 = 381)
 estimate_hr <- function(median_os_group1, median_os_group2,
-                        ci_group1, ci_group2,
                         n_group1, n_group2) {
   # Calculating hazard ratio using exponential distribution approximation
   # Assuming exponential distribution: median = log(2) / lambda

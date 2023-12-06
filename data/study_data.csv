@@ -1,13 +1,12 @@
-Study,Year,HR_Estimated,Median_OS_Treatment,n_treatment,Median_OS_Treatment_CI_lower,Median_OS_Treatment_CI_upper,Median_OS_Control,n_control,Median_OS_Control_CI_lower,Median_OS_Control_CI_upper,HR,HR_CI_lower,HR_CI_upper
-Craddock et al.,2017,Reported,9.6,129,7.9,12.7,11,130,8.5,12,0.87,0.66,1.15
-Lübbert et al.,2020,Reported,8.2,,,,5.1,,,,0.65,0.48,0.89
-Jenner et al.,2023,Reported,,,,,,,,,0.99,0.76,1.29
-Bachy et al.,2022,Reported,51.8,,35.7,72.6,42.9,,29.9,NR,0.9,0.68,1.20
-Garcia-Manero et al.,2018,Estimated,9.95,203,6.87,13.14,9.95,203,8.15,11.37,1,0.82,1.21
-Tassara et al.,2014,Reported,,83,,,,93,,,0.72,0.44,1.17
-San-Miguel et al.,2016,Estimated,40.3,387,35,44.8,35.8,381,29,40.6,0.94,0.78,1.14
-Montalban-Bravo et al.,2017,Reported,5.9,52,,,7.9,27,,,0.67,0.32,1.40
-Sekeres et al.,2017,Estimated,17.31,92,12.88,27.99,14.75,92,11.70,19.81,0.85,0.64,1.14
-Issa et al.,2015,Estimated,11.9,79,,,11.2,70,,,0.94,0.68,1.30
-Prebet et al.,2015,Estimated,5.7,23,,,12.8,24,,,2.18,1.24,3.88
-Garcia-Manero et al.,2017,Estimated,14.85,40,,,15.57,42,,,1.04,0.68,1.62
+Study,Year,HR_Estimated,Cancer_Type,Median_OS_Treatment,n_treatment,Median_OS_Treatment_CI_lower,Median_OS_Treatment_CI_upper,Median_OS_Control,n_control,Median_OS_Control_CI_lower,Median_OS_Control_CI_upper,HR,HR_CI_lower,HR_CI_upper
+Craddock et al.,2017,Reported,AML,9.6,129,7.9,12.7,11,130,8.5,12,0.87,0.66,1.15
+Lübbert et al.,2020,Reported,AML,8.2,,,,5.1,,,,0.65,0.48,0.89
+Jenner et al.,2023,Reported,Non-AML,,,,,,,,,0.99,0.76,1.29
+Bachy et al.,2022,Reported,Non-AML,51.8,,35.7,72.6,42.9,,29.9,NR,0.9,0.68,1.20
+Garcia-Manero et al.,2018,Estimated,AML,9.95,203,6.87,13.14,9.95,203,8.15,11.37,1,0.82,1.21
+Tassara et al.,2014,Reported,AML,,83,,,,93,,,0.72,0.44,1.17
+San-Miguel et al.,2016,Reported,Non-AML,40.3,387,35,44.8,35.8,381,29,40.6,0.94,0.78,1.14
+Sekeres et al.,2017,Estimated,Non-AML,17.31,92,12.88,27.99,14.75,92,11.70,19.81,0.85,0.64,1.14
+Issa et al.,2015,Estimated,AML,11.9,79,,,11.2,70,,,0.94,0.68,1.30
+Prebet et al.,2015,Estimated,Non-AML,5.7,23,,,12.8,24,,,2.18,1.24,3.88
+Garcia-Manero et al.,2017,Estimated,Non-AML,14.85,40,,,15.57,42,,,1.04,0.68,1.62
