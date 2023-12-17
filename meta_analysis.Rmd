@@ -1,5 +1,5 @@
 ---
-title: "Untitled"
+title: "Meta-Analysis of "
 author: "Dan Kerchner, Xinyang Zhang, Erika Hubbard, Xun Liu, Yijie He"
 date: "`r Sys.Date()`"
 output: pdf_document
@@ -27,6 +27,8 @@ df <- df %>%
          trial = row_number(),
          study_year = paste(Study, Year)) %>%
   rename(`Hazard Ratio type` = HR_Estimated)
+
+df$Quality <- factor(df$Quality, ordered = TRUE, levels = c('Poor', 'Fair', 'Good'))
 ```
 
 # Perform meta-analysis using `metagen`
@@ -36,9 +38,9 @@ Based on https://link.springer.com/chapter/10.1007/978-3-319-21416-0_2
 ```{r fig.height=6, fig.width=10}
 mg1 <- metagen(logHR, se_logHR,
                studlab=study_year, data = df,
-               sm="HR")
+               sm="HR", fixed = FALSE, random = TRUE)
 print(mg1)
-pdf(file='forestplot.pdf', height = 6, width = 10)
+pdf(file='forestplot_main.pdf', height = 6, width = 10)
 forest(mg1, sortvar = Year, layout="RevMan5",
        text.common = 'Total (fixed effect, 95% CI)', text.w.common = 'fixed',
        label.left = "favors treatment", label.right = "favors control",
@@ -52,9 +54,13 @@ forest(mg1, sortvar = Year, layout="RevMan5",
        label.left = "favors treatment", label.right = "favors control",
        print.tau2 = FALSE)
 ```
+# Subgroup analyses:
+
+## Subgroup analysis by Hazard Ratio Type (Reported vs. Estimated)
+
 ```{r fig.height=6, fig.width=10}
 mg2 <- update.meta(mg1, subgroup = `Hazard Ratio type`, control = list(maxiter=1000))
-pdf(file='forestplot2.pdf', height = 6, width = 10)
+pdf(file='forestplot_HR_type.pdf', height = 6, width = 10)
 forest(mg2, sortvar = Year, layout="RevMan5",
        text.common = 'Total (fixed effect, 95% CI)', text.w.common = 'fixed',
        label.left = "favors treatment", label.right = "favors control",
@@ -67,10 +73,12 @@ forest(mg2, sortvar = Year, layout="RevMan5",
        label.test.subgroup.common = 'Test for subgroup differences (fixed effects):',
        print.tau2 = FALSE)
 ```
+
+## Subgroup analysis by Cancer Type
 
 ```{r fig.height=6, fig.width=10}
 mg3 <- update.meta(mg1, subgroup = Cancer_Type)
-pdf(file='forestplot3.pdf', height = 6, width = 10)
+pdf(file='forestplot_cancer_type.pdf', height = 6, width = 10)
 forest(mg3, sortvar = Year, layout="RevMan5",
        text.common = 'Total (fixed effect, 95% CI)', text.w.common = 'fixed',
        label.left = "favors treatment", label.right = "favors control",
@@ -85,7 +93,45 @@ forest(mg3, sortvar = Year, layout="RevMan5",
 ```
 
 
-Funnel plot:
+## Subgroup analysis by treatment type
+
+```{r fig.height=6, fig.width=10}
+mg4 <- update.meta(mg1, subgroup = Treatment_Type)
+pdf(file='forestplot_treatment_type.pdf', height = 7, width = 10)
+forest(mg4, sortvar = Year, layout="RevMan5",
+       text.common = 'Total (fixed effect, 95% CI)', text.w.common = 'fixed',
+       label.left = "favors treatment", label.right = "favors control",
+       label.test.subgroup.common = 'Test for subgroup differences (fixed effects):',
+       print.tau2 = FALSE)
+dev.off()
+forest(mg4, sortvar = Year, layout="RevMan5",
+       text.common = 'Total (fixed effect, 95% CI)', text.w.common = 'fixed',
+       label.left = "favors treatment", label.right = "favors control",
+       label.test.subgroup.common = 'Test for subgroup differences (fixed effects):',
+       print.tau2 = FALSE)
+```
+## Subgroup analysis by study quality
+
+```{r fig.height=7, fig.width=10}
+mg5 <- update.meta(mg1, subgroup = Quality)
+pdf(file='forestplot_quality.pdf', height = 7, width = 10)
+forest(mg5, sortvar = Year, layout="RevMan5",
+       text.common = 'Total (fixed effect, 95% CI)', text.w.common = 'fixed',
+       label.left = "favors treatment", label.right = "favors control",
+       label.test.subgroup.common = 'Test for subgroup differences (fixed effects):',
+       print.tau2 = FALSE)
+dev.off()
+forest(mg5, sortvar = Year, layout="RevMan5",
+       text.common = 'Total (fixed effect, 95% CI)', text.w.common = 'fixed',
+       label.left = "favors treatment", label.right = "favors control",
+       label.test.subgroup.common = 'Test for subgroup differences (fixed effects):',
+       print.tau2 = FALSE)
+```
+
+# Publication Bias testing
+
+## Funnel plot to visualize possible publication bias
+
 ```{r}
 pdf(file='funnelplot.pdf', height = 6.5, width = 8.5)
 funnel(mg1, studlab = df$study, cex.studlab = 0.5)#, xlim = c(0.55, 1.50))
@@ -93,14 +139,37 @@ dev.off()
 funnel(mg1, studlab = df$study, cex.studlab = 0.5)#, xlim = c(0.55, 1.50))
 ```
 
-## Begg's test
+## Begg's test of funnel plot asymmetry
+
 ```{r}
 metabias(mg1, k.min=9, method.bias = "Begg")
 ```
 
-## Egger's test
+## Egger's Linear regression test of funnel plot asymmetry
 
 ```{r}
 metabias(mg1, k.min=9, plotit = TRUE, method.bias = "Egger")
+```
+# Sensitivity Analysis
+
+## Leave-one-out analysis
+
+```{r}
+l1o <- metainf(mg1)
+```
+
+```{r}
+pdf(file='leave1out.pdf', height = 6, width = 10)
+forest(l1o, layout="RevMan5",
+       text.common = 'Total (fixed effect, 95% CI)', text.w.common = 'fixed',
+       label.left = "favors treatment", label.right = "favors control",
+       label.test.subgroup.common = 'Test for subgroup differences (fixed effects):',
+       print.tau2 = FALSE)
+dev.off()
+forest(l1o, layout="RevMan5",
+       text.common = 'Total (fixed effect, 95% CI)', text.w.common = 'fixed',
+       label.left = "favors treatment", label.right = "favors control",
+       label.test.subgroup.common = 'Test for subgroup differences (fixed effects):',
+       print.tau2 = FALSE)
 ```
 

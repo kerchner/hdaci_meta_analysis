@@ -1,11 +1,5 @@
-# We can use this method in the event that a given study does not 
+# We can use this estimation method in the event that a given study does not 
 # compute hazard ratio w/confidence interval.
-# Source was ChatGPT
-# ChatGPT prompt was:
-#  If I have two groups and their medial survival times
-#  with confidence intervals, and the number of patients
-#  in each group, but i do not have individual patient data, 
-#  how can i estimate the hazard ratio and its confidence interval?
 
 # Note that this method is based on an assumption that 
 # survival times follow an exponential distribution within each group
