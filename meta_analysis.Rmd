@@ -38,7 +38,7 @@ Based on https://link.springer.com/chapter/10.1007/978-3-319-21416-0_2
 ```{r fig.height=6, fig.width=10}
 mg1 <- metagen(logHR, se_logHR,
                studlab=study_year, data = df,
-               sm="HR", fixed = FALSE, random = TRUE)
+               sm="HR", common = TRUE, random = TRUE)
 print(mg1)
 pdf(file='forestplot_main.pdf', height = 6, width = 10)
 forest(mg1, sortvar = Year, layout="RevMan5",
@@ -155,7 +155,7 @@ metabias(mg1, k.min=9, plotit = TRUE, method.bias = "Egger")
 ## Leave-one-out analysis
 
 ```{r}
-l1o <- metainf(mg1)
+l1o <- metainf(mg1, pooled="random")
 ```
 
 ```{r}
